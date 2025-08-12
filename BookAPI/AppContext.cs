@@ -13,9 +13,9 @@ public class AppContext(DbContextOptions<AppContext> options) : DbContext(option
         modelBuilder.Entity<User>(builder =>
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Name).HasMaxLength(15);
-            builder.Property(x => x.Email).HasMaxLength(15);
-            builder.Property(x => x.Password).HasMaxLength(20).IsRequired();
+            builder.Property(x => x.Name).HasMaxLength(20);
+            builder.Property(x => x.Email).HasMaxLength(20);
+            builder.Property(x => x.PasswordHash).IsRequired();
             builder.Property(x => x.Login).HasMaxLength(20).IsRequired();
             builder.Property(x=> x.Role).IsRequired();
         });

@@ -5,6 +5,8 @@ public static class Extensions
     public static IServiceCollection AddBusinessServices(this IServiceCollection services)
     {
         services.AddScoped<IBookService, BookService>();
+        services.AddScoped<IUserService, UserService>();
+        
         return services;
     }
 }

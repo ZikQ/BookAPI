@@ -12,7 +12,11 @@ public class BookRepository(AppContext context) : IBookRepository
         await context.Books.AddAsync(book, ct);
         await context.SaveChangesAsync(ct);
     }
-
+    public IQueryable<Book> Query()
+    {
+        return context.Books.AsQueryable();
+    }
+    
     public async Task<Book?> GetByIdAsync(int id, CancellationToken ct=default)
     {
         return await context.Books.FirstOrDefaultAsync(x=>x.Id == id, ct);

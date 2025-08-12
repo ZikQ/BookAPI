@@ -9,4 +9,5 @@ public interface IBookRepository
     Task<List<Book>> GetAllAsync(CancellationToken ct);
     Task UpdateAsync(Book book, CancellationToken ct);
     Task DeleteAsync(Book book, CancellationToken ct);
+    IQueryable<Book> Query();
 }

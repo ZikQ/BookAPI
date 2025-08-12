@@ -9,4 +9,6 @@ public interface IBookService
     Task<Book> GetByIdAsync(int id, CancellationToken ct=default);
     Task DeleteAsync(int id, CancellationToken ct=default);
     Task UpdateAsync(int id, CreateBookDto update, CancellationToken ct = default);
+    Task PatchAsync(int id, UpdateBookPartialDto update, CancellationToken ct = default);
+    Task<PagedResult<Book>> GetAllAsync(BookQueryParameters parameters, CancellationToken ct = default);
 }
