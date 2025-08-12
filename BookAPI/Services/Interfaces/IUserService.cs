@@ -1,11 +1,11 @@
 ﻿using BookAPI.DTOs;
 using BookAPI.Models;
 
-namespace BookAPI.Services;
+namespace BookAPI.Services.Interfaces;
 
 public interface IUserService
 {
-    Task<User> GetByIdAsync(int id, CancellationToken ct = default);
+    Task<GetUserDto> GetByIdAsync(int id, CancellationToken ct = default);
     
     Task<User> RegisterAsync(CreateUserDto dto, CancellationToken ct = default);
     

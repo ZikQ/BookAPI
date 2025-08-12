@@ -1,6 +1,8 @@
 ﻿using BookAPI.DTOs;
 using BookAPI.Models;
 using BookAPI.Repositories;
+using BookAPI.Repositories.Interfaces;
+using BookAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookAPI.Services;

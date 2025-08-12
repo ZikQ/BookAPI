@@ -1,7 +1,7 @@
 ﻿using BookAPI.DTOs;
 using BookAPI.Models;
 
-namespace BookAPI.Services;
+namespace BookAPI.Services.Interfaces;
 
 public interface IBookService
 {

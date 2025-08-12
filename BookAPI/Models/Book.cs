@@ -7,6 +7,9 @@ public class Book
     public string Author { get; set; } = null!;
     public string Genre { get; set; } = null!;
     public int PublicationYear { get; set; }
+    
+    public ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public double AverageRating => Reviews.Any() ? Reviews.Average(r => r.Rating) : 0;
     public DateTime Created { get; set; }
     public DateTime Updated { get; set; }
 }

@@ -1,4 +1,6 @@
-﻿namespace BookAPI.DTOs;
+﻿using BookAPI.Models;
+
+namespace BookAPI.DTOs;
 
 public class CreateUserDto
 {
@@ -6,6 +8,14 @@ public class CreateUserDto
     public string Email { get; set; } = null!;
     public string Name { get; set; } = null!;
     public string Password { get; set; } = null!;
+}
+
+public class GetUserDto
+{
+    public int Id { get; set; }
+    public string Email { get; set; } = null!;
+    public string Name { get; set; } = null!;
+    public UserRole Role { get; set; }
 }
 
 public class LoginDto

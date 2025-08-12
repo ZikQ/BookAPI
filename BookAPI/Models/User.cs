@@ -14,7 +14,6 @@ public class User
     public string Email { get; set; } = null!;
     public string Login { get; set; } = null!;
     public string PasswordHash { get; set; } = null!;
-    public DateTime CreatedAt { get; set; }
-
     public UserRole Role { get; set; } = UserRole.User;
+    public DateTime CreatedAt { get; set; }
 }

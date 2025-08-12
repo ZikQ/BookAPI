@@ -1,6 +1,5 @@
 ﻿using BookAPI.DTOs;
-using BookAPI.Models;
-using BookAPI.Services;
+using BookAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +11,7 @@ public class BookController(IBookService service) : ControllerBase
 {
     [Authorize(Policy = "RequireLibrarianOrAdmin")]
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateBookDto book)
+    public async Task<IActionResult> CreateAsync([FromBody] CreateBookDto book)
     {
         await service.CreateAsync(book);
         return NoContent();

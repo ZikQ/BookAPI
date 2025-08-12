@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BookAPI.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookAPI.Repositories;
 
@@ -8,8 +9,9 @@ public static class Extensions
     {
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
         
-        services.AddDbContext<AppContext>(x =>
+        services.AddDbContext<AppDbContext>(x =>
         {
             x.UseNpgsql("Host=localhost;Database=books;Username=postgres;Password=admin");
         });

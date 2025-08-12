@@ -1,4 +1,6 @@
-﻿namespace BookAPI.Services;
+﻿using BookAPI.Services.Interfaces;
+
+namespace BookAPI.Services;
 
 public static class Extensions
 {
@@ -6,6 +8,7 @@ public static class Extensions
     {
         services.AddScoped<IBookService, BookService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IReviewService, ReviewService>();
         
         return services;
     }

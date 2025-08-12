@@ -4,6 +4,8 @@ using System.Text;
 using BookAPI.DTOs;
 using BookAPI.Models;
 using BookAPI.Repositories;
+using BookAPI.Repositories.Interfaces;
+using BookAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -17,14 +19,22 @@ public class UserService(IUserRepository repository, IOptions<AuthOptions> authO
     
     private readonly PasswordHasher<User> _passwordHasher = new();
 
-    public async Task<User> GetByIdAsync(int id, CancellationToken ct = default)
+    public async Task<GetUserDto> GetByIdAsync(int id, CancellationToken ct = default)
     {
         var user = await repository.GetByIdAsync(id, ct);
         
         if (user is null)
             throw new Exception($"User {id} not found");
+
+        var userDto = new GetUserDto
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Name = user.Name,
+            Role = user.Role
+        };
         
-        return user;
+        return userDto;
     }
 
     public async Task<User> RegisterAsync(CreateUserDto dto, CancellationToken ct = default)
