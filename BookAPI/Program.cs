@@ -52,6 +52,7 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Description = "Введите токен в формате: Bearer {токен}"
     });
+    
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
