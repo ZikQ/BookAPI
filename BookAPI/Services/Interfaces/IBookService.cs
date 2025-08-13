@@ -11,4 +11,7 @@ public interface IBookService
     Task UpdateAsync(int id, CreateBookDto update, CancellationToken ct = default);
     Task PatchAsync(int id, UpdateBookPartialDto update, CancellationToken ct = default);
     Task<PagedResult<Book>> GetAllAsync(BookQueryParameters parameters, CancellationToken ct = default);
+    
+    Task UploadCoverAsync(int id, IFormFile file, CancellationToken ct = default);
+    Task UploadPdfAsync(int id, IFormFile file, CancellationToken ct = default);
 }

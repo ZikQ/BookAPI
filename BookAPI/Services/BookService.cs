@@ -7,8 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookAPI.Services;
 
-public class BookService(IBookRepository repository) : IBookService
+public class BookService(IBookRepository repository, IFileService fileService) : IBookService
 {
+    #region CRUD
     public async Task CreateAsync(CreateBookDto bookdto, CancellationToken ct=default)
     {
         var book = new Book
@@ -107,4 +108,35 @@ public class BookService(IBookRepository repository) : IBookService
             PageSize = parameters.PageSize,
         };
     }
+    #endregion
+
+    #region FileService
+
+    public async Task UploadCoverAsync(int id, IFormFile file, CancellationToken ct = default)
+    {
+        var book = await repository.GetByIdAsync(id, ct);
+        if (book == null)
+            throw new NotFoundException($"Book with ID {id} not found");
+
+        var coverPath = await fileService.UploadCoverAsync(id, file, ct);
+        book.CoverPath = coverPath;
+        book.Updated = DateTime.UtcNow;
+
+        await repository.UpdateAsync(book, ct);
+    }
+
+    public async Task UploadPdfAsync(int id, IFormFile file, CancellationToken ct = default)
+    {
+        var book = await repository.GetByIdAsync(id, ct);
+        if (book == null)
+            throw new NotFoundException($"Book with ID {id} not found");
+
+        var pdfPath = await fileService.UploadPdfAsync(id, file, ct);
+        book.PdfPath = pdfPath;
+        book.Updated = DateTime.UtcNow;
+
+        await repository.UpdateAsync(book, ct);
+    }
+
+    #endregion
 }

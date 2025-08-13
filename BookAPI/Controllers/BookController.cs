@@ -58,4 +58,26 @@ public class BookController(IBookService service) : ControllerBase
         await service.DeleteAsync(id);
         return NoContent();
     }
+    
+    [HttpPost("{id}/upload-cover")]
+    [Authorize(Policy = AuthorizationPolicies.LibrarianOrAdmin)]
+    public async Task<IActionResult> UploadCover([FromRoute] int id, IFormFile file, CancellationToken ct = default)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest("No file provided");
+
+        await service.UploadCoverAsync(id, file, ct);
+        return NoContent();
+    }
+
+    [HttpPost("{id}/upload-pdf")]
+    [Authorize(Policy = AuthorizationPolicies.LibrarianOrAdmin)]
+    public async Task<IActionResult> UploadPdf([FromRoute] int id, IFormFile file, CancellationToken ct = default)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest("No file provided");
+
+        await service.UploadPdfAsync(id, file, ct);
+        return NoContent();
+    }
 }
