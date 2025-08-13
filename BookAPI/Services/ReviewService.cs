@@ -61,7 +61,7 @@ public class ReviewService(IReviewRepository repository) : IReviewService
 
         if (review is null)
         {  
-            throw new Exception($"Review with id {id} not found");
+            throw new NotFoundException($"Review with id {id} not found");
         }
 
         if (update.Comment is not null) review.Comment = update.Comment;
@@ -70,7 +70,6 @@ public class ReviewService(IReviewRepository repository) : IReviewService
         review.Updated = DateTime.UtcNow;
 
         await repository.UpdateAsync(review, ct);
-        
     }
 
     public async Task DeleteAsync(int id, CancellationToken ct = default)
@@ -78,10 +77,10 @@ public class ReviewService(IReviewRepository repository) : IReviewService
         var review = await repository.GetByIdAsync(id, ct);
 
         if (review is null)
-        {  
-            throw new Exception($"Review with id {id} not found");
+        {
+            throw new NotFoundException($"Review with id {id} not found");
         }
-        
+
         await repository.DeleteAsync(review, ct);
     }
 }

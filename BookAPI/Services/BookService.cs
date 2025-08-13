@@ -28,7 +28,7 @@ public class BookService(IBookRepository repository) : IBookService
         var book = await repository.GetByIdAsync(id, ct);
         
         if (book is null)
-            throw new Exception("Book not found");
+            throw new NotFoundException("Book not found");
 
         return book;
     }

@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BookAPI.Services;
 
-public class UserService(IUserRepository repository, IOptions<AuthOptions> authOptions)
+public class UserService(IUserRepository repository, IOptions<AuthOptions> authOptions, ITokenService tokenService)
     : IUserService
 {
     private readonly AuthOptions _authOptions = authOptions.Value;
@@ -24,7 +24,7 @@ public class UserService(IUserRepository repository, IOptions<AuthOptions> authO
         var user = await repository.GetByIdAsync(id, ct);
         
         if (user is null)
-            throw new Exception($"User {id} not found");
+            throw new NotFoundException($"User {id} not found");
 
         var userDto = new GetUserDto
         {
@@ -41,7 +41,7 @@ public class UserService(IUserRepository repository, IOptions<AuthOptions> authO
     {
         var existing = await repository.GetByLoginAsync(dto.Login, ct);
         if (existing is not null)
-            throw new Exception($"User {dto.Login} already registered");
+            throw new AlreadyRegisteredException($"User {dto.Login} already registered");
 
         var user = new User
         {
@@ -63,34 +63,13 @@ public class UserService(IUserRepository repository, IOptions<AuthOptions> authO
     {
         var user = await repository.GetByLoginAsync(dto.Login, ct);
         if (user is null)
-            throw new Exception("Invalid login or password");
+            throw new ConflictException("Invalid login or password");
         
         var verify = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
         if (verify == PasswordVerificationResult.Failed)
-            throw new Exception("Invalid login or password");
+            throw new ConflictException("Invalid login or password");
         
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(_authOptions.Secret);
-
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Login),
-            new Claim(ClaimTypes.Role, user.Role.ToString()),
-        };
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(_authOptions.ExpirationMinutes),
-            Issuer = _authOptions.Issuer,
-            Audience = _authOptions.Audience,
-            SigningCredentials =
-                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
-        
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        var tokenString =  tokenHandler.WriteToken(token);
+        var (tokenString, tokenDescriptor) = tokenService.GenerateToken(user);
 
         return new AuthResultDto
         {
