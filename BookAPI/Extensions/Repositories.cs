@@ -1,9 +1,10 @@
-﻿using BookAPI.Repositories.Interfaces;
+﻿using BookAPI.Repositories;
+using BookAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookAPI.Repositories;
+namespace BookAPI.Extensions;
 
-public static class Extensions
+public static class Repositories
 {
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {

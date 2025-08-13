@@ -1,4 +1,5 @@
 ﻿using BookAPI.DTOs;
+using BookAPI.Extensions;
 using BookAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,12 +10,21 @@ namespace BookAPI.Controllers;
 [Route("api/[controller]")]
 public class BookController(IBookService service) : ControllerBase
 {
-    [Authorize(Policy = "RequireLibrarianOrAdmin")]
+    [Authorize(Policy = AuthorizationPolicies.LibrarianOrAdmin)]
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateBookDto book)
     {
         await service.CreateAsync(book);
         return NoContent();
+    }
+    
+    [AllowAnonymous]
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync([FromQuery] BookQueryParameters parameters)
+    {
+        var result = await service.GetAllAsync(parameters);
+        
+        return Ok(result);
     }
     
     [AllowAnonymous]
@@ -25,15 +35,7 @@ public class BookController(IBookService service) : ControllerBase
         return Ok(book);
     }
     
-    [Authorize(Policy = "RequireAdmin")]
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteAsync([FromRoute] int id)
-    {
-        await service.DeleteAsync(id);
-        return NoContent();
-    }
-    
-    [Authorize(Policy = "RequireLibrarianOrAdmin")]
+    [Authorize(Policy = AuthorizationPolicies.LibrarianOrAdmin)]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] CreateBookDto update)
     {
@@ -41,20 +43,19 @@ public class BookController(IBookService service) : ControllerBase
         return NoContent();
     }
     
-    [Authorize(Policy = "RequireLibrarianOrAdmin")]
+    [Authorize(Policy = AuthorizationPolicies.LibrarianOrAdmin)]
     [HttpPatch("{id:int}")]
     public async Task<IActionResult> PatchAsync([FromRoute] int id, [FromBody] UpdateBookPartialDto update)
     {
         await service.PatchAsync(id, update);
         return NoContent();
     }
-
-    [AllowAnonymous]
-    [HttpGet]
-    public async Task<IActionResult> GetAllAsync([FromQuery] BookQueryParameters parameters)
+    
+    [Authorize(Policy = AuthorizationPolicies.Admin)]
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
-        var result = await service.GetAllAsync(parameters);
-        
-        return Ok(result);
+        await service.DeleteAsync(id);
+        return NoContent();
     }
 }

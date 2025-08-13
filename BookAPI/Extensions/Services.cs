@@ -1,8 +1,9 @@
-﻿using BookAPI.Services.Interfaces;
+﻿using BookAPI.Services;
+using BookAPI.Services.Interfaces;
 
-namespace BookAPI.Services;
+namespace BookAPI.Extensions;
 
-public static class Extensions
+public static class Services
 {
     public static IServiceCollection AddBusinessServices(this IServiceCollection services)
     {

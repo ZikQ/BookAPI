@@ -25,4 +25,23 @@ public class ReviewRepository(AppDbContext dbContext) : IReviewRepository
             .Where(x => x.BookId == bookId)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<IEnumerable<Review>> GetByUserIdAsync(int userId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Reviews
+            .Where(x => x.UserId == userId)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task UpdateAsync(Review review, CancellationToken cancellationToken = default)
+    {
+        dbContext.Reviews.Update(review);
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task DeleteAsync(Review review, CancellationToken cancellationToken = default)
+    {
+        dbContext.Reviews.Remove(review);
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
 }

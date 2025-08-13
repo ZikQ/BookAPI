@@ -1,14 +1,19 @@
 using BookAPI;
+using BookAPI.Extensions;
 using BookAPI.Models;
-using BookAPI.Repositories;
-using BookAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Jwt"));
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = false;
+});
+
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<AuthOptions>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -29,11 +34,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("RequireAdmin", policy => policy.RequireRole(UserRole.Admin.ToString()));
-    options.AddPolicy("RequireLibrarianOrAdmin", policy => policy.RequireRole(UserRole.Librarian.ToString(), UserRole.Admin.ToString()));
-});
+builder.Services.AddPolices();
 
 builder.Services.AddBusinessServices();
 builder.Services.AddRepositories();

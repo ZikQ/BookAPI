@@ -1,10 +1,16 @@
-﻿namespace BookAPI.DTOs;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BookAPI.DTOs;
 
 public class CreateBookDto
 {
+    [Required]
     public string Title { get; set; } = null!;
+    [Required]
     public string Author { get; set; } = null!;
+    [Required]
     public string Genre { get; set; } = null!;
+    [Required]
     public int PublicationYear { get; set; }
 }
 
