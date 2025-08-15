@@ -20,9 +20,9 @@ public class TokenService(IOptions<AuthOptions> authOptions) : ITokenService
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Login),
-            new Claim(ClaimTypes.Role, user.Role.ToString()),
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Name, user.Login),
+            new(ClaimTypes.Role, user.Role.ToString()),
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor

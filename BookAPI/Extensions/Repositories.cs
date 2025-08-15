@@ -12,11 +12,6 @@ public static class Repositories
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
         
-        services.AddDbContext<AppDbContext>(x =>
-        {
-            x.UseNpgsql("Host=localhost;Database=books;Username=postgres;Password=admin");
-        });
-        
         return services;
     }
 }

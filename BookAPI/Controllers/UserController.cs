@@ -15,9 +15,7 @@ public class UserController(IUserService service) : ControllerBase
         try
         {
             var user = await service.RegisterAsync(dto, ct);
-
-            return CreatedAtAction(nameof(GetUserAsync), new { id = user.Id }, 
-                new { user.Id, user.Login, user.Email });
+            return NoContent();
         }
         catch (Exception e)
         {
@@ -37,13 +35,5 @@ public class UserController(IUserService service) : ControllerBase
         {
             return Unauthorized(new { message = e.Message });
         }
-    }
-    
-    [AllowAnonymous]
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetUserAsync([FromRoute] int id)
-    {
-        var user = await service.GetByIdAsync(id);
-        return Ok(user);
     }
 }

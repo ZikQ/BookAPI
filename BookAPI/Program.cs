@@ -1,12 +1,17 @@
 using BookAPI;
 using BookAPI.Extensions;
-using BookAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
 
 builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.Configure<ApiBehaviorOptions>(options =>

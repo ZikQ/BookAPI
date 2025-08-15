@@ -11,7 +11,6 @@ public static class Services
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IReviewService, ReviewService>();
-        services.AddScoped<IFileService, FileService>();
         
         return services;
     }

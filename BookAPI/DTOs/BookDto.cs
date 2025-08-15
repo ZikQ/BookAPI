@@ -6,12 +6,16 @@ public class CreateBookDto
 {
     [Required]
     public string Title { get; set; } = null!;
+    
     [Required]
     public string Author { get; set; } = null!;
+    
     [Required]
     public string Genre { get; set; } = null!;
+    
     public string PdfPath { get; set; } = null!;
     public string CoverPath { get; set; } = null!;
+    
     [Required]
     public int PublicationYear { get; set; }
 }

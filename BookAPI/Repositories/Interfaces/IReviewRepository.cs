@@ -10,4 +10,5 @@ public interface IReviewRepository
     Task<IEnumerable<Review>> GetByUserIdAsync(int userId, CancellationToken cancellationToken = default);
     Task UpdateAsync(Review review, CancellationToken cancellationToken = default);
     Task DeleteAsync(Review review, CancellationToken cancellationToken = default);
+    IQueryable<Review> Query();
 }

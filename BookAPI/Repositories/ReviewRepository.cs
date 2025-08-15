@@ -44,4 +44,9 @@ public class ReviewRepository(AppDbContext dbContext) : IReviewRepository
         dbContext.Reviews.Remove(review);
         await dbContext.SaveChangesAsync(cancellationToken);
     }
+
+    public IQueryable<Review> Query()
+    {
+        return dbContext.Reviews.AsQueryable();
+    }
 }
